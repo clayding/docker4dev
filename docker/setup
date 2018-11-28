@@ -23,7 +23,7 @@ parser.add_argument("-u", "--uboot", help = " Path of the uboot source", type = 
 parser.add_argument("-v", "--uboot_opts", help = "External path of the  bootloader source", type = str, default = "")
 parser.add_argument("-t", "--toolschain", help = " Path of the toolschain source", type = str, default = "")
 parser.add_argument("-p", "--toolschain_opts", help = "External path of the toolschain source", type = str, default = "")
-print "&&&&&&&&&&&&&"
+
 args = parser.parse_args()
 
 class BaseConfig(object):
@@ -168,8 +168,6 @@ class BaseConfig(object):
                 app_name = app_name.split('/')[-2]
             app_name = "-v %s:/opt/uml/build/%s" %(app,os.path.basename(app_name))
             self.apps.append(app_name)
-        print self.apps
-        print app_name
     
     def change_cwd(self):
         """
@@ -289,7 +287,6 @@ class BaseConfig(object):
             -v %s:/opt/uml %s %s %s  builder:uml %s %s \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"" \
             % (psedottyargs, os.getenv("HOME"),os.getenv("HOME"), " ".join(self.apps),os.getcwd(), self.kernel_opts, self.uboot_opts,self.toolschain_opts, \
                self.uid, self.gid, self.builddir,self.sourcedir, self.kernelurl, self.ubooturl,self.toolschainurl," ".join(self.command))
-        print "\"%s\"" %(" ".join(self.apps)) 
         self.logger.note("Running build machine...")
         return subprocess.call(cmd, shell = True)
 
