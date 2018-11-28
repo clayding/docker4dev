@@ -1,0 +1,7 @@
+[user]
+	email = builder@link-motion.com
+	name = Builder
+[color]
+	ui = auto
+[core]
+	editor = vim

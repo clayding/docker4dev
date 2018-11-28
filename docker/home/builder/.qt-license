@@ -1,0 +1,12 @@
+#  Qt product license file
+CustomerID="1dce9efc-0fb8-4a74-baca-8331a3d8a716"
+LicenseID="2683580"
+Licensee="Admin Link Motion"
+Products="Qt for Device Creation - Embedded Linux"
+ExpiryDate=2019-10-14
+# Used for Qt 3.x
+LicenseKey=CXM6-LA5U-5CB4
+# Used for Qt 4.x and Qt 5.0
+LicenseKeyExt=BGKX-8M5-F4M-2CX-37DB9-5YNV7-7C77
+# Used for Qt 5.1 ->
+Qt5LicenseKey=BG8X-8M5-F4M-2CX-37DB9-5YNV7-CA39
