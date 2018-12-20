@@ -16,13 +16,7 @@ parser.add_argument("-a", "--apps", help ="All external paths of application dir
 parser.add_argument("-b", "--builddir", help ="Path of build directory (defaults to 'build')", type = str, default = "build")
 parser.add_argument("-c", "--command", help = "Run build command directly and exit the builder", type = str, default = "", nargs = argparse.REMAINDER)
 parser.add_argument("-d", "--downloads", help = "Path stored with the downloads, will be mounted as a volume", type = str, default = "")
-parser.add_argument("-k", "--kernel", help = " Path of the kernel source", type = str, default = "")
-parser.add_argument("-l", "--kernel_opts", help = "External path of the linux source", type = str, default = "")
 parser.add_argument("-s", "--sourcedir", help ="Path of source directory (defaults to 'sources')", type = str, default = "sources")
-parser.add_argument("-u", "--uboot", help = " Path of the uboot source", type = str, default = "")
-parser.add_argument("-v", "--uboot_opts", help = "External path of the  bootloader source", type = str, default = "")
-parser.add_argument("-t", "--toolschain", help = " Path of the toolschain source", type = str, default = "")
-parser.add_argument("-p", "--toolschain_opts", help = "External path of the toolschain source", type = str, default = "")
 
 args = parser.parse_args()
 
@@ -120,45 +114,6 @@ class BaseConfig(object):
 
         self.builddir = os.path.join("/opt/uml/",args.builddir)
         self.sourcedir = os.path.join("/opt/uml/",args.sourcedir)
-        
-        self.kernel_opts = ""
-        self.kernelurl = ""
-        if args.kernel_opts:
-            self.kernel_opts = "-v %s:/opt/uml/externalsrc/kernel-src" % args.kernel_opts
-            self.kernelurl = self.kernel_opts.split(':')[1]
-        elif args.kernel:
-            if not os.path.basename(args.kernel):
-                args.kernel = args.kernel.split('/')[-2]
-            self.kernelurl = "/".join([self.sourcedir,os.path.basename(args.kernel)])
-        else: 
-            self.kernelurl = "git@bitbucket.org:bcld_a20/kernel-3.4.61.git;branch=a20_dev;"
-        
-        self.uboot_opts = ""
-        self.ubooturl = ""
-        if args.uboot_opts:
-            self.uboot_opts = "-v %s:/opt/uml/externalsrc/uboot-src" %  args.uboot_opts
-            self.ubooturl = self.uboot_opts.split(':')[1]
-        elif args.uboot:
-            if not os.path.basename(args.uboot):
-                args.uboot = args.uboot.split('/')[-2]
-            self.ubooturl = "/".join([self.sourcedir,os.path.basename(args.uboot)]) 
-        else:
-            self.ubooturl = "git@bitbucket.org:bcld_a20/a20_uboot.git;branch=master"
-
-        self.toolschain_opts = ""
-        self.toolschainurl = ""
-        if args.toolschain_opts:
-            self.toolschain_opts = "-v %s:/opt/uml/toolschain/external" %  args.toolschain_opts
-            self.toolschainurl = "/opt/uml/toolschain/external"
-        elif args.toolschain:
-            if not os.path.basename(args.toolschain):
-                args.toolschain = args.toolschain.split('/')[-2]
-            self.toolschainurl = "/".join(["/opt/uml/toolschain",os.path.basename(args.toolschain)])
-        else:
-            self.logger.error("Please Set the toolschain path first using -t or -p option")
-            parser.print_help()
-            exit(1)
-
 
         self.command = args.command
         self.apps = []
@@ -188,7 +143,6 @@ class BaseConfig(object):
             self.logger.note("Changing cwd to %s" % execdir)
             os.chdir(execdir)
             self._mkdirhier("externalsrc")
-            self._mkdirhier("toolschain/external/")
 
 
     def check_docker(self):
@@ -284,9 +238,9 @@ class BaseConfig(object):
             -v /tmp/.X11-unix:/tmp/.X11-unix \
             -v /dev:/dev \
             %s \
-            -v %s:/opt/uml %s %s %s  builder:uml %s %s \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"" \
-            % (psedottyargs, os.getenv("HOME"),os.getenv("HOME"), " ".join(self.apps),os.getcwd(), self.kernel_opts, self.uboot_opts,self.toolschain_opts, \
-               self.uid, self.gid, self.builddir,self.sourcedir, self.kernelurl, self.ubooturl,self.toolschainurl," ".join(self.command))
+            -v %s:/opt/uml  builder:uml %s %s \"%s\" \"%s\" \"%s\"" \
+            % (psedottyargs, os.getenv("HOME"),os.getenv("HOME"), " ".join(self.apps),os.getcwd(), \
+               self.uid, self.gid, self.builddir,self.sourcedir," ".join(self.command))
         self.logger.note("Running build machine...")
         return subprocess.call(cmd, shell = True)
 
