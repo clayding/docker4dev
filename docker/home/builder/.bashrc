@@ -119,27 +119,8 @@ fi
 
 export BUILD_DIR="@@BUILD_DIR@@"
 export SOURCE_DIR="@@SOURCE_DIR@@"
-export LM_KERNEL_SOURCE_URL="@@LM_KERNEL_SOURCE_URL@@"
-export LM_UBOOT_SOURCE_URL="@@LM_UBOOT_SOURCE_URL@@"
-export LM_KERNEL_SOURCE_DIR="@@LM_KERNEL_SOURCE_DIR@@"
-export LM_UBOOT_SOURCE_DIR="@@LM_UBOOT_SOURCE_DIR@@"
-export LM_TOOLSCHAIN_URL="@@LM_TOOLSCHAIN_URL@@"
 
 if shopt -q login_shell; then
-  rm $BUILD_DIR/kernel-src -rf
-  rm $BUILD_DIR/uboot-src -rf
-
-  if [ $LM_KERNEL_SOURCE_DIR ];then
-    echo -e "\033[34mLink $BUILD_DIR/kernel-src --> $LM_KERNEL_SOURCE_DIR\033[0m"
-    ln -s $LM_KERNEL_SOURCE_DIR $BUILD_DIR/kernel-src
-  fi
-  if [ $LM_UBOOT_SOURCE_DIR ];then
-    echo -e "\033[34mLink $BUILD_DIR/uboot-src --> $LM_UBOOT_SOURCE_DIR\033[0m"
-    ln -s $LM_UBOOT_SOURCE_DIR $BUILD_DIR/uboot-src
-  fi
   cd $BUILD_DIR
   chown -R builder: $BUILD_DIR
-  export PATH=$LM_TOOLSCHAIN_URL/bin:$PATH:/sbin:/usr/sbin
-  export ARCH=arm
-  export CROSS_COMPILE=arm-none-linux-gnueabi
 fi
