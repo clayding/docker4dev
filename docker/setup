@@ -112,8 +112,8 @@ class BaseConfig(object):
             self.logger.error("setup script can not be run by 'root' user.")
             exit(1)
 
-        self.builddir = os.path.join("/opt/uml/",args.builddir)
-        self.sourcedir = os.path.join("/opt/uml/",args.sourcedir)
+        self.builddir = os.path.join("/opt/intel/",args.builddir)
+        self.sourcedir = os.path.join("/opt/intel/",args.sourcedir)
 
         self.command = args.command
         self.apps = []
@@ -121,7 +121,7 @@ class BaseConfig(object):
             app_name = app
             if not os.path.basename(app_name):
                 app_name = app_name.split('/')[-2]
-            app_name = "-v %s:/opt/uml/build/%s" %(app,os.path.basename(app_name))
+            app_name = "-v %s:/opt/intel/build/%s" %(app,os.path.basename(app_name))
             self.apps.append(app_name)
     
     def change_cwd(self):
@@ -183,7 +183,7 @@ class BaseConfig(object):
         rebuild = False
         nocache = "false"
         try:
-            output = subprocess.check_output("docker inspect --format={{.Created}} builder:uml 2>/dev/null", shell = True)
+            output = subprocess.check_output("docker inspect --format={{.Created}} builder:intel 2>/dev/null", shell = True)
             m = re.match(r'(^[0-9]{4}-[0-9]{2}-[0-9]{2})[a-zA-Z ]{1}([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{6}).*$', output)
             created = time.mktime(time.strptime('%s %s' % (m.group(1), m.group(2)), '%Y-%m-%d %H:%M:%S.%f'))
 
@@ -221,7 +221,7 @@ class BaseConfig(object):
             rebuild = True
 
         if rebuild:
-            cmd = "cd docker; docker build --no-cache=%s -t builder:uml ./" % nocache
+            cmd = "cd docker; docker build --no-cache=%s -t builder:intel ./" % nocache
             self.logger.note("Building docker builder image... (This may take some time.)")
             subprocess.check_output(cmd, shell = True)
 
@@ -238,7 +238,7 @@ class BaseConfig(object):
             -v /tmp/.X11-unix:/tmp/.X11-unix \
             -v /dev:/dev \
             %s \
-            -v %s:/opt/uml  builder:uml %s %s \"%s\" \"%s\" \"%s\"" \
+            -v %s:/opt/intel  builder:intel %s %s \"%s\" \"%s\" \"%s\"" \
             % (psedottyargs, os.getenv("HOME"),os.getenv("HOME"), " ".join(self.apps),os.getcwd(), \
                self.uid, self.gid, self.builddir,self.sourcedir," ".join(self.command))
         self.logger.note("Running build machine...")

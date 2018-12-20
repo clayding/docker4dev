@@ -13,7 +13,7 @@ optional arguments:
 	-h, --help            show this help message and exit  显示帮助信息
 	-a ..., --apps ...    All external paths of application directory 
                           加入-a选项，后面跟数个应用的目录（绝对地址），可以把
-                          本地的应用目录挂载到/opt/uml/build/ 下面
+                          本地的应用目录挂载到/opt/intel/build/ 下面
 	-b BUILDDIR, --builddir BUILDDIR
                           Path of build directory (defaults to 'build')
                           用于开发或者build的目录，在本地的build目录下

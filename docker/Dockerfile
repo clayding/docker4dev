@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Shikun Ding <dingshikun@uml-tech.com>
+MAINTAINER Shikun Ding <fancyou@yeah.net>
 
 ENV DEBIAN_FRONTEND noninteractive
 

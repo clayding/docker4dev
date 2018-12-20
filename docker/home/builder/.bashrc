@@ -13,7 +13,7 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
-HISTFILE=/opt/uml/@@BUILD_DIR@@/.builder_bash_history
+HISTFILE=/opt/intel/@@BUILD_DIR@@/.builder_bash_history
 
 # for getting aliases to expand in non-interactive shells
 shopt -s expand_aliases

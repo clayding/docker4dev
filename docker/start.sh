@@ -26,7 +26,7 @@ echo -e "\n# Builder privilege specification\nbuilder ALL=NOPASSWD: ALL" >> /etc
 
 [ -c "$(tty)" ] && chmod a+rw $(tty)
 
-cp -rp /opt/uml/docker/home /
+cp -rp /opt/intel/docker/home /
 chown -R builder: /home/builder
 
 chmod 700 /home/builder/.gnupg
